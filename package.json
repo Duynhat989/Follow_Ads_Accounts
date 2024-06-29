@@ -1,0 +1,38 @@
+{
+  "name": "awesome-extension",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "vue": "vite --host",
+    "dev": "vite build --mode developmemnt && npm run copy-assets",
+    "build": "vite build",
+    "serve": "vite preview",
+    "copy-assets": "cpy src/_locales/**/* dist/_locales"
+  },
+  "dependencies": {
+    "ant-design-vue": "^4.1.2",
+    "axios": "^1.6.8",
+    "csv-parse": "^4.13.0",
+    "vite-plugin-icons": "^0.6.5",
+    "vue": "^3.0.5",
+    "vue-google-oauth2": "^1.5.10",
+    "vue3-google-login": "^2.0.26",
+    "vue3-google-oauth2": "^1.0.7",
+    "vuex": "^4.1.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@asigloo/prettier-config": "^0.2.0",
+    "@iconify/json": "^1.1.387",
+    "@vitejs/plugin-vue": "^1.3.0",
+    "@vue/compiler-sfc": "^3.0.5",
+    "autoprefixer": "^10.3.1",
+    "cpy-cli": "^5.0.0",
+    "postcss": "^8.3.6",
+    "tailwindcss": "^2.2.7",
+    "vite": "^2.4.4",
+    "vite-plugin-chrome-extension": "^0.0.7",
+    "vite-plugin-components": "^0.13.2",
+    "vite-plugin-icons": "^0.6.5"
+  }
+}

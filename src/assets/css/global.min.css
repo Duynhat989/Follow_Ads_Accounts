@@ -1,0 +1,20 @@
+#app{
+   
+}
+*{
+    margin: 0;
+    padding: 0;
+}
+.LAYOUT_SITE{
+    width: 100%;
+    border-radius: 15px;
+    box-shadow: 1px 1px 19px 1px #b5b0b06c;
+    min-height: 70vh;
+    border: 1px solid rgba(128, 128, 128, 0.096);
+    padding: 36px;
+    color:#41557bb7;
+    background: rgb(255, 255, 255);
+}
+/* .container{
+    background: rgba(255, 255, 255, 0.438);
+} */
