@@ -2,8 +2,18 @@
 .ads_tbody td {
     text-align: center;
 }
+.active{
+    margin-bottom: 10px;
+    text-align: end;
+}
 </style>
 <template>
+    <div class="active">
+        <div class="btn-group">
+            <button type="button" class="btn btn-outline-primary">Cập nhật dữ liệu</button>
+            <button type="button" class="btn btn-outline-warning">Tải xuống</button>
+        </div>
+    </div>
     <h5>I. Danh sách tài khoản quảng cáo</h5>
     <table class="table table-bordered table-sm" style="font-size: 0.8em;">
         <thead>
@@ -22,8 +32,8 @@
                 <th>Loại TK</th>
                 <th>Quyền</th>
                 <th>ID BM</th>
-                <th>Next_bill</th>
                 <th>Múi giờ</th>
+                <th>Next_bill</th>
                 <th>Ngày tạo</th>
             </tr>
         </thead>

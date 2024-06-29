@@ -4,8 +4,29 @@
 }
 </style>
 <template>
-    <h5>I. Cài đặt phần mềm</h5>
-    <!-- Cài đặt phần mềm -->
+    <div class="container">
+        <h5>I. Cài đặt phần mềm</h5>
+        <!-- Cài đặt phần mềm -->
+        <div class="setup">
+            <form action="/action_page.php">
+                <div class="form-group">
+                    <label for="Text">Id Telegram:</label>
+                    <input type="text" class="form-control" placeholder="Enter Text" id="text">
+                </div>
+                <div class="form-group">
+                    <label for="Text">Token Telegram:</label>
+                    <input type="text" class="form-control" placeholder="Enter Text" id="text">
+                </div>
+                <div class="form-group">
+                    <label for="Text">  Thời gian chờ:</label>
+                    <input type="text" class="form-control" placeholder="Enter Text" id="text">
+                </div>
+                <div class="form-group" style="margin-top: 10px;">
+                    <button type="submit" class="btn btn-primary">Lưu cài đặt</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';
@@ -19,12 +40,10 @@ const listAds = ref([])
 const onSetup = async () => {
     info_profile.value = await JSON.parse(localStorage.getItem("info_profile")) || {}
     access_token.value = localStorage.getItem("access_token") || ''
-    console.log("LOG", info_profile.value)
     clsAdsAccount = new AdsAccouunt(info_profile.value.id, access_token.value)
     // -=---------------------------
     let lst = await clsAdsAccount.getList()
     let list_ads = lst.data
-    console.log(list_ads)
     for (let index = 0; index < list_ads.length; index++) {
         const element = list_ads[index];
         listAds.value.push({

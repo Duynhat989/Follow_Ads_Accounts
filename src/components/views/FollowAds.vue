@@ -2,56 +2,81 @@
 .ads_tbody td {
     text-align: center;
 }
+
+.button {
+    width: calc(100% / 2);
+    padding: 10px;
+}
+
+.btn {
+    width: 100%;
+}
+
+.flex {
+    display: flex;
+}
+.textarea{
+    width: 100%;
+    padding: 10px;
+}
+.textarea:focus{
+    outline: none;
+}
+.form-textarea{
+    padding: 10px;
+}
 </style>
 <template>
-    <h5>I. Danh sách tài khoản quảng cáo</h5>
-    <table class="table table-bordered table-sm" style="font-size: 0.8em;">
-        <thead>
-            <tr>
-                <th>Stt</th>
-                <th>#</th>
-                <th>ID</th>
-                <th>Owner</th>
-                <th>Tên</th>
-                <th>Số dư</th>
-                <th>Ngưỡng</th>
-                <th>Giới hạn</th>
-                <th>Chi tiêu</th>
-                <th>QTV</th>
-                <th>Tiền tệ</th>
-                <th>Loại TK</th>
-                <th>Quyền</th>
-                <th>ID BM</th>
-                <th>Next_bill</th>
-                <th>Múi giờ</th>
-                <th>Ngày tạo</th>
-            </tr>
-        </thead>
-        <tbody class="ads_tbody">
-            <tr v-for="(item, index) of listAds">
-                <td>{{ index }}</td>
-                <td>
-                    <i v-if="item.account_status == 1" class='bx bxs-circle' style='color:#09da4c'></i>
-                    <i v-else class='bx bxs-circle' style='color:#ff0101'></i>
-                </td>
-                <td>{{ item.account_id }}</td>
-                <td>{{ item.owner }}</td>
-                <td>{{ item.name }}</td>
-                <td>{{ item.balance }}</td>
-                <td>{{ item.threshold_amount }}</td>
-                <td>{{ item.adtrust_dsl }}</td>
-                <td>{{ item.spend }}</td>
-                <td>{{ item.userpermissions }}</td>
-                <td>{{ item.currency }}</td>
-                <td>{{ item.owner_business.length > 0 ? 'Doanh nghiệp':'Cá nhân' }}</td>
-                <td>ADMIN</td>
-                <td>{{ item.owner_business }}</td>
-                <td>_</td>
-                <td>{{ item.next_bill_date }}</td>
-                <td>{{ item.created_time }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-8">
+                <h5>I. Thông báo trạng thái</h5>
+                <table class="table table-bordered table-sm" style="font-size: 0.8em;">
+                    <thead>
+                        <tr>
+                            <th>.</th>
+                            <th>#</th>
+                            <th>ID</th>
+                            <th>Owner</th>
+                            <th>Tên</th>
+                            <th>Quyền</th>
+                            <th>ID BM</th>
+                            <th>Ngày tạo</th>
+                            <th>Thông báo trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody class="ads_tbody">
+                        <tr v-for="(item, index) of listAds">
+                            <td><input type="checkbox" v-model="checkbox"></td>
+                            <td>
+                                <i v-if="item.account_status == 1" class='bx bxs-circle' style='color:#09da4c'></i>
+                                <i v-else class='bx bxs-circle' style='color:#ff0101'></i>
+                            </td>
+                            <td>{{ item.account_id }}</td>
+                            <td>{{ item.owner }}</td>
+                            <td>{{ item.name }}</td>
+                            <td>ADMIN</td>
+                            <td>{{ item.owner_business }}</td>
+                            <td>{{ item.created_time }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-xl-4">
+                <div class="form-dev flex">
+                    <div class="button">
+                        <button class="btn btn-outline-success">Bắt đầu theo dõi</button>
+                    </div>
+                    <div class="button">
+                        <button class="btn btn-outline-danger">Dừng theo dõi</button>
+                    </div>
+                </div>
+                <div class="form-textarea">
+                    <textarea readonly class="textarea" rows="10" placeholder="Log..."></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';
@@ -74,6 +99,7 @@ const onSetup = async () => {
     for (let index = 0; index < list_ads.length; index++) {
         const element = list_ads[index];
         listAds.value.push({
+            checkbox: true,
             account_status: element.account_status,
             account_id: element.account_id,
             owner: element.owner,
