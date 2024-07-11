@@ -16,15 +16,19 @@ export const get_token_eaab = async () => {
     }
 }
 export const get_info_profile = async (access_token) => {
-    var requestOptions = {
-        method: 'GET',
-        redirect: 'follow'
-    };
-    let response = await fetch(`https://graph.facebook.com/v14.0/me/?access_token=${access_token}`, requestOptions);
-    if (response.status === 200) {
-        var data = await response.json();
-        return data;
-    } else {
+    try {
+        var requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
+        let response = await fetch(`https://graph.facebook.com/v14.0/me/?access_token=${access_token}`, requestOptions);
+        if (response.status === 200) {
+            var data = await response.json();
+            return data;
+        } else {
+            return null;
+        }
+    } catch (error) {
         return null;
     }
 }

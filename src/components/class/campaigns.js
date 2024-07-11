@@ -17,6 +17,21 @@ class Campaigns {
             return null;
         }
     }
+    async getListActive(act_id) {
+        var requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
+        let urlLink = `https://graph.facebook.com/v15.0/act_${act_id}/campaigns?fields=id,status,name,delivery_info&date_preset=maximum&access_token=${this.access_token}`
+        //https://graph.facebook.com/v15.0/act_${act_id}/campaigns?fields=id,status,name,daily_budget,account_id,lifetime_budget,budget_remaining,created_time&date_preset=maximum&access_token=${this.access_token}
+        let response = await fetch(urlLink, requestOptions);
+        if (response.status === 200) {
+            var data = await response.json();
+            return data;
+        } else {
+            return null;
+        }
+    }
     async insights(campaign_id) {
         var requestOptions = {
             method: 'GET',

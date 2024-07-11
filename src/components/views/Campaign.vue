@@ -58,23 +58,41 @@
 .more {
     cursor: pointer;
 }
-.active{
+
+.active {
     margin-bottom: 10px;
     text-align: end;
 }
-.loading-icon{
+
+.loading-icon {
+    text-align: center;
+}
+
+.filt {
+    text-align: center;
+}
+
+.btn {
+    min-width: 150px;
+}
+
+.loading-icon {
     text-align: center;
 }
 </style>
 <template>
     <div class="site">
-        <div class="active">
-            <div class="btn-group">
-                <button type="button" class="btn btn-outline-primary">Cập nhật dữ liệu</button>
-                <button type="button" class="btn btn-outline-warning">Tải xuống</button>
+        <div class="filt">
+            <div class="active flex">
+                <div class="btn-group">&emsp;
+                    <button type="button" class="btn btn-outline-primary btn-sm" @click="onSetup()"><i
+                            class='bx bx-refresh'></i> Tải
+                        lại</button>
+                    <!-- <button type="button" class="btn btn-outline-warning btn-sm"><i class='bx bx-download'></i> Tải xuống</button> -->
+                </div>
             </div>
         </div>
-        <div class="adsaccount" v-for="(item, index) of listAds">
+        <div class="adsaccount" v-for="(item, index) of listAds" :key="index">
             <div class="adsaccount-data">
                 <!-- <label>Tên tài khoản: {{ item.data.name }}</label> -->
                 <div class="adsaccount_info flex">
@@ -114,7 +132,7 @@
                 </div>
             </div>
             <div class="adsaccount-show">
-                <div class="campaigns" v-for="(temp, index) of item.campaigns">
+                <div class="campaigns" v-for="(temp, index1) of item.campaigns" :key="index1">
                     <div class="campaigns-data">
                         <!-- <label>Chiến dịch: {{ temp.data.name }}</label> -->
                         <div class="campaigns_info flex">
@@ -151,7 +169,7 @@
                         </div>
                     </div>
                     <div class="campaigns-show">
-                        <div class="insights" v-for="(insight, index) of temp.insights">
+                        <div class="insights" v-for="(insight, index2) of temp.insights" :key="index2">
                             <div class="insights-data">
                                 <!-- <label>Chi tiết</label> -->
                                 <div class="insights-info flex">
@@ -206,10 +224,15 @@
                 </div>
             </div>
         </div>
+
+        <div class="list-group--da flex">
+            <button v-for="number in pageTotal" :key="number" @click="setPage(number - 1)" type="button"
+                class="btn btn-outline-warning btn-sm" style="margin-right: 5px;">{{ number }}</button>
+        </div>
         <div class="loading-icon" v-if="isLoading">
             <label for="">{{ titleDownload }}</label>
             <div class="icon">
-                <i class='bx bx-loader bx-spin' ></i>
+                <i class='bx bx-loader bx-spin'></i>
             </div>
         </div>
     </div>
@@ -227,6 +250,14 @@ const access_token = ref()
 const listAds = ref([])
 const isLoading = ref(false)
 
+const page = ref(0)
+const pageTotal = ref(0)
+
+const setPage = async (number) => {
+    page.value = number
+    console.log(page.value)
+}
+
 const titleDownload = ref('Đang cập nhật dữ liệu mới')
 
 const onSetup = async () => {
@@ -238,33 +269,38 @@ const onSetup = async () => {
     // -=---------------------------
     let adaccounts = await JSON.parse(localStorage.getItem("adaccounts")) || []
     // ---------------------------------
+    // let stopLost = adaccounts.length > 10 ? 10 : adaccounts.length
     for (let index = 0; index < adaccounts.length; index++) {
         // khởi tạo 1 chiến dịch 
         const element = adaccounts[index];
-        titleDownload.value = `Đang lấy thông tin tài khoản: "${element.name}" Mã ID: ${element.account_id}`
-        let lst = await camps.getList(element.account_id)
-        let list_campaigns = lst.data
-        let campaigns = []
-        if (list_campaigns.length > 0) {
-            for (let indexInsights = 0; indexInsights < list_campaigns.length; indexInsights++) {
-                const elementInsights = list_campaigns[indexInsights];
-                let lstInsights = await camps.insights(elementInsights.id)
-                let listInsights = lstInsights.data
-                campaigns.push({
-                    data: elementInsights,
-                    insights: listInsights
-                })
+        console.log(adaccounts.length)
+        console.log(element)
+        if (element) {
+            titleDownload.value = `Đang tải: "${element.name}" Mã ID: ${element.account_id}`
+            let lst = await camps.getList(element.account_id)
+            let list_campaigns = lst.data
+            let campaigns = []
+            if (list_campaigns.length > 0) {
+                for (let indexInsights = 0; indexInsights < list_campaigns.length; indexInsights++) {
+                    const elementInsights = list_campaigns[indexInsights];
+                    // let lstInsights = await camps.insights(elementInsights.id)
+                    let listInsights = []
+                    campaigns.push({
+                        data: elementInsights,
+                        insights: listInsights
+                    })
+                }
             }
+            listAds.value.push({
+                data: element,
+                campaigns: campaigns
+            })
         }
-        listAds.value.push({
-            data: element,
-            campaigns: campaigns
-        })
-        console.log(list_campaigns)
     }
     isLoading.value = false
     console.log(listAds.value)
 }
+
 const formartMoney = async (money, currency = "USD") => {
     var formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -275,6 +311,6 @@ const formartMoney = async (money, currency = "USD") => {
     return await formatter.format(typeof money == 'number' ? money : parseInt(money))
 }
 onMounted(() => {
-    onSetup()
+    // onSetup()
 })
 </script>
